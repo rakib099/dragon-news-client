@@ -37,7 +37,7 @@ const Header = () => {
                                 </NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
-                        <Nav>
+                        <Nav className='align-items-center'>
                             {
                                 user?.uid ?
                                     <>
