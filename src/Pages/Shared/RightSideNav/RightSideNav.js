@@ -3,12 +3,17 @@ import React, { useContext } from 'react';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import toast from 'react-hot-toast';
 import { FaGoogle, FaGithub, FaFacebook, FaTwitter, FaWhatsapp, FaTwitch } from "react-icons/fa";
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthProvider/AuthProvider';
 import BrandCarousel from '../BrandCarousel/BrandCarousel';
 
 const RightSideNav = () => {
     const {providerLogin} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const googleProvider = new GoogleAuthProvider();
 
@@ -17,6 +22,12 @@ const RightSideNav = () => {
         .then(result => {
             const user = result.user;
             console.log(user);
+            if (user.emailVerified) {
+                navigate(from, { replace: true });
+            }
+            else {
+                toast.error("Your email is not verified. Please verify email first.");
+            }
         })
         .catch(error => console.error(error));
     }
